@@ -1,15 +1,27 @@
 # -*- codeing = utf-8 -*-
 
-import re, optparse
+import re
+import argparse
 import sys
 
 ip_list = []
 
-#IPCreate comes form  https://github.com/grayddq/IPCreate
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        epilog='\tExample: \r\npython3 ' + sys.argv[0] + ' -c 172.20.10.1/26 -p 80,443 -o ip.txt')
+    parser.add_argument('-c', dest='cip', default='172.20.10.1/24', help='172.20.10.1/24,172.20.10.253-172.20.11.6')
+    parser.add_argument('-f', dest='file', help='file.txt')
+    parser.add_argument('-p', dest='port', help='80,7001,8080-8081')
+    parser.add_argument('-o', dest='out_file', default='ip_out.txt',
+                        help='Result ip list out file(default save in ip_out.txt)')
+    return parser.parse_args()
+
+
+# IP_Create comes form  https://github.com/grayddq/IPCreate
 class IPCreate():
     def __init__(self, cip):
         self.cip = cip
-        self.ip_list = []
         self.result_info = []
 
     def isIP(self, str):
@@ -130,23 +142,14 @@ if __name__ == '__main__':
     if sys.version_info < (3, 0):
         sys.stdout.write("Sorry,requires Python 3.x\n")
         sys.exit(1)
-    parser = optparse.OptionParser('python3 %prog -c 172.20.10.254-172.20.11.6 -o ip.txt\n'
-                                   'python3 %prog -c 172.20.10.1 -p 8080,7001 -o ip.txt\n'
-                                   'python3 %prog -c 172.20.10.1/26 -p 8080-8085 -o ip.txt\n'
-                                   'python3 %prog -f ip.txt -p 8080-8085 -o ip.txt')
+    arags = parse_args()
 
-    parser.add_option('-c', dest='cip', default='172.20.10.1/24', help='172.20.10.1/24,172.20.10.253-172.20.11.6')
-    parser.add_option('-f', dest='file', help='file.txt')
-    parser.add_option('-p', dest='port', help='80,7001,8080-8081')
-    parser.add_option('-o', dest='out_file', default='ip_out.txt',
-                      help='Result ip list out file(default save in ip_out.txt)')
-    (opts, args) = parser.parse_args()
-    if (opts.port == None):
-        ip_list = IPCreate(opts.cip).run()
-        save(opts.out_file)
-    elif (opts.file != None):
-        get_file_ip_port(opts.file, opts.port)
-        save(opts.out_file)
+    if (arags.port == None):
+        ip_list = IPCreate(arags.cip).run()
+        save(arags.out_file)
+    elif (arags.file != None):
+        get_file_ip_port(arags.file, arags.port)
+        save(arags.out_file)
     else:
-        get_ip_port(opts.cip, opts.port)
-        save(opts.out_file)
+        get_ip_port(arags.cip, arags.port)
+        save(arags.out_file)
