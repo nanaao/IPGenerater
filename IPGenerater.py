@@ -1,11 +1,11 @@
 # -*- codeing = utf-8 -*-
-# Author:Zz
 
 import re, optparse
 import sys
 
 ip_list = []
 
+#IPCreate comes form  https://github.com/grayddq/IPCreate
 class IPCreate():
     def __init__(self, cip):
         self.cip = cip
