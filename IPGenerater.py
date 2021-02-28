@@ -66,7 +66,9 @@ class IPCreate():
             ipnet_bin = ipbin[0:int(mask)] + ipbin[int(mask):32].replace("1", "0")
             ipstart_bin = bin(int(ipnet_bin, base=2) + 1).replace("0b", '')
             ipend_bin = bin(int(ipnet_bin, base=2) + pow(2, 32 - int(mask)) - 2).replace("0b", '')
-
+            if(len(ipstart_bin)<32):
+                ipstart_bin='00'+ipstart_bin
+                ipend_bin='00'+ipend_bin
             ipstart = self.binstr_to_ipstr(ipstart_bin)
             ipend = self.binstr_to_ipstr(ipend_bin)
             return ipstart + "-" + ipend
