@@ -18,7 +18,6 @@ def parse_args():
     return parser.parse_args()
 
 
-# IP_Create comes form  https://github.com/grayddq/IPCreate
 class IPCreate():
     def __init__(self, cip):
         self.cip = cip
